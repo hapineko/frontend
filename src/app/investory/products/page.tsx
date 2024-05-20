@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 import productsData from "./sample/dummy_products.json";
 import Link from "next/link";
 
+// ui
+import Heading from "@/app/ui/Heading";
+
 type ProductData = {
   id: number;
   name: string;
@@ -35,10 +38,10 @@ export default function Page() {
   });
 
   // 登録データの値を更新
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) =>{
-    const {value, name} = event.target;
-    setInput({...input, [name]:value});
-  }
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target;
+    setInput({ ...input, [name]: value });
+  };
 
   // 新規登録処理、新規登録行の表示状態を保持
   const [shownNewRow, setShownNewRow] = useState(false);
@@ -60,7 +63,9 @@ export default function Page() {
   const handleEditRow: any = (id: number) => {
     setShownNewRow(false);
     setEditingRow(id);
-    const SelectedProduct: ProductData = data.find((v) => v.id === id) as ProductData;
+    const SelectedProduct: ProductData = data.find(
+      (v) => v.id === id
+    ) as ProductData;
     setInput({
       id: id.toString(),
       name: SelectedProduct.name,
@@ -80,114 +85,133 @@ export default function Page() {
 
   return (
     <div>
-      <h2 className="text-2xl p-8 bg-slate-200">商品一覧</h2>
-      <button onClick={handleShowNewRow}>商品を追加する</button>
-      <table>
-        <thead>
-          <tr>
-            <th>商品ID</th>
-            <th>商品名</th>
-            <th>単価</th>
-            <th>説明</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {shownNewRow ? (
+      <Heading>商品一覧</Heading>
+      <div className="p-8">
+        <button onClick={handleShowNewRow}>商品を追加する</button>
+        <table className="border">
+          <thead>
             <tr>
-              <td></td>
-              <td>
-                <input type="text" name="name" placeholder="商品名" />
-              </td>
-              <td>
-                <input type="number" name="price" placeholder="価格" />
-              </td>
-              <td>
-                <input type="text" name="description" placeholder="説明" />
-              </td>
-              <td></td>
-              <td>
-                <button
-                  onClick={(event) => {
-                    handleAddCancel(event);
-                  }}
-                >
-                  キャンセル
-                </button>
-                <button
-                  onClick={(event) => {
-                    handleAdd(event);
-                  }}
-                >
-                  登録する
-                </button>
-              </td>
+              <th className="border bg-slate-200 w-1/8">商品ID</th>
+              <th className="border bg-slate-200 w-1/3">商品名</th>
+              <th className="border bg-slate-200 w-1/8">単価</th>
+              <th className="border bg-slate-200 w-1/3">説明</th>
+              <th className="border bg-slate-200 w-1/8"></th>
+              <th className="border bg-slate-200 w-1/8"></th>
             </tr>
-          ) : (
-            ""
-          )}
-          {data.map((data: any) =>
-            editingRow === data.id ? (
-              <tr key={data.id}>
-                <td>{data.id}</td>
+          </thead>
+          <tbody>
+            {shownNewRow ? (
+              <tr>
+                <td></td>
                 <td>
-                  <input type="text" name="name" value={input.name} onChange={handleInput} />
+                  <input type="text" name="name" placeholder="商品名" />
                 </td>
                 <td>
-                  <input type="number" name="price" value={input.price} onChange={handleInput} />
+                  <input type="number" name="price" placeholder="価格" />
                 </td>
                 <td>
-                  <input type="text" name="description" value={input.description} onChange={handleInput} />
+                  <input type="text" name="description" placeholder="説明" />
                 </td>
                 <td></td>
                 <td>
                   <button
-                    onClick={() => {
-                      handleEditCancel(data.id);
+                    onClick={(event) => {
+                      handleAddCancel(event);
                     }}
                   >
                     キャンセル
                   </button>
                   <button
-                    onClick={() => {
-                      handleEdit(data.id);
+                    onClick={(event) => {
+                      handleAdd(event);
                     }}
                   >
-                    更新する
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleDelete(data.id);
-                    }}
-                  >
-                    削除する
+                    登録する
                   </button>
                 </td>
               </tr>
             ) : (
-              <tr>
-                <td>{data.id}</td>
-                <td>{data.name}</td>
-                <td>{data.price}</td>
-                <td>{data.description}</td>
-                <td>
-                  <Link href={`/investory/products/${data.id}`}>在庫処理</Link>
-                </td>
-                <td>
-                  <button
-                    onClick={() => {
-                      handleEditRow(data.id);
-                    }}
-                  >
-                    更新・削除
-                  </button>
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
+              ""
+            )}
+            {data.map((data: any) =>
+              editingRow === data.id ? (
+                <tr key={data.id}>
+                  <td>{data.id}</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="name"
+                      value={input.name}
+                      onChange={handleInput}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      name="price"
+                      value={input.price}
+                      onChange={handleInput}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="description"
+                      value={input.description}
+                      onChange={handleInput}
+                    />
+                  </td>
+                  <td></td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        handleEditCancel(data.id);
+                      }}
+                    >
+                      キャンセル
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleEdit(data.id);
+                      }}
+                    >
+                      更新する
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleDelete(data.id);
+                      }}
+                    >
+                      削除する
+                    </button>
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td>{data.id}</td>
+                  <td>{data.name}</td>
+                  <td>{data.price}</td>
+                  <td>{data.description}</td>
+                  <td>
+                    <Link href={`/investory/products/${data.id}`}>
+                      在庫処理
+                    </Link>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        handleEditRow(data.id);
+                      }}
+                    >
+                      更新・削除
+                    </button>
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
